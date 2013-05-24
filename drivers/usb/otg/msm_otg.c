@@ -43,10 +43,6 @@
 #include <mach/clk.h>
 #include <mach/cable_detect.h>
 
-#ifdef CONFIG_FORCE_FAST_CHARGE
-#include <linux/fastchg.h>
-#endif
-
 #define MSM_USB_BASE	(motg->regs)
 #define DRIVER_NAME	"msm_otg"
 
@@ -109,15 +105,6 @@ static void send_usb_connect_notify(struct work_struct *w)
 
 	motg->connect_type_ready = 1;
 	USBH_INFO("send connect type %d\n", motg->connect_type);
-#ifdef CONFIG_FORCE_FAST_CHARGE
-  if (motg->connect_type == CONNECT_TYPE_USB) {
-    USB_peripheral_detected = USB_ACC_DETECTED; /* Inform forced fast charge that a USB accessory has been attached */
-    USBH_INFO("USB forced fast charge : USB device currently attached");
-  } else {
-    USB_peripheral_detected = USB_ACC_NOT_DETECTED; /* Inform forced fast charge that a USB accessory has not been attached */
-    USBH_INFO("USB forced fast charge : No USB device currently attached");
-  }
-#endif 
 	mutex_lock(&notify_sem);
 #ifdef CONFIG_CABLE_DETECT_ACCESSORY
 	if (cable_get_accessory_type() == DOCK_STATE_DMB) {
@@ -860,12 +847,6 @@ static int msm_otg_reset(struct otg_transceiver *otg)
 	u32 val = 0;
 	u32 ulpi_val = 0;
 	USBH_INFO("%s\n", __func__);
-
-#ifdef CONFIG_FORCE_FAST_CHARGE
-  USB_porttype_detected = NO_USB_DETECTED; /* No USB plugged, clear fast charge detected port value */
-  is_fast_charge_forced = FAST_CHARGE_NOT_FORCED; /* No fast charge can be forced then... */
-  current_charge_mode = CURRENT_CHARGE_MODE_DISCHARGING; /* ... and we are now on battery */
-#endif
 
 	clk_enable(motg->clk);
 	if (motg->pdata->phy_reset)
@@ -1866,26 +1847,6 @@ static void msm_chg_detect_work(struct work_struct *w)
 
 	USBH_INFO("%s: state:%s\n", __func__,
 		chg_state_string(motg->chg_state));
-#ifdef CONFIG_FORCE_FAST_CHARGE
-    switch (motg->chg_type) {
-    case USB_SDP_CHARGER:    USB_porttype_detected = USB_SDP_DETECTED;
-            break;
-    case USB_DCP_CHARGER:    USB_porttype_detected = USB_DCP_DETECTED;
-            break;
-    case USB_CDP_CHARGER:    USB_porttype_detected = USB_CDP_DETECTED;
-            break;
-    case USB_ACA_A_CHARGER:    USB_porttype_detected = USB_ACA_A_DETECTED;
-            break;
-    case USB_ACA_B_CHARGER:    USB_porttype_detected = USB_ACA_B_DETECTED;
-            break;
-    case USB_ACA_C_CHARGER:    USB_porttype_detected = USB_ACA_C_DETECTED;
-            break;
-    case USB_ACA_DOCK_CHARGER:  USB_porttype_detected = USB_ACA_DOCK_DETECTED;
-            break;
-    default:      USB_porttype_detected = USB_INVALID_DETECTED;
-            break;
-    }
-#endif 
 
 	if (motg->pdata->china_ac_detect) {
 		charger_detect_by_uart();
