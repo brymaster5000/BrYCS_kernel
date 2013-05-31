@@ -369,6 +369,7 @@ extern struct cpufreq_governor cpufreq_gov_interactive;
 #elif defined(CONFIG_CPU_FREQ_DEFAULT_GOV_SCARY)
 extern struct cpufreq_governor cpufreq_gov_scary;
 #define CPUFREQ_DEFAULT_GOVERNOR    (&cpufreq_gov_scary)
+#define CPUFREQ_DEFAULT_GOVERNOR (&cpufreq_gov_greaselightning)
 #elif defined(CONFIG_CPU_FREQ_DEFAULT_GOV_SAVAGEDZEN)
 extern struct cpufreq_governor cpufreq_gov_SavagedZen;
 #define CPUFREQ_DEFAULT_GOVERNOR  (&cpufreq_gov_SavagedZen)
