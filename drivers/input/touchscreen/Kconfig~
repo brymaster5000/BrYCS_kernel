@@ -221,14 +221,6 @@ config TOUCHSCREEN_CYPRESS_CS
 	  Say Y here if you have cap sensor on your device
 	  If unsure, say N.
 
-config TOUCH_KEY_FILTER
-	tristate "Virtualkey and TouchScreen Filter"
-	depends on TOUCHSCREEN_CYPRESS_CS
-	default n
-	help
-		say y here if you need to avoid some unintend touch & key
-		if unsure, say N
-
 config TOUCHSCREEN_DYNAPRO
 	tristate "Dynapro serial touchscreen"
 	select SERIO
@@ -299,6 +291,12 @@ config TOUCHSCREEN_GUNZE
 	  To compile this driver as a module, choose M here: the
 	  module will be called gunze.
 
+config TOUCHSCREEN_ELAN_KTF2K
+	tristate "Elan KTF2000 I2C touchscreen"
+	depends on I2C
+	help
+	  This enables support for Elan KTF2000 over I2C based touchscreens.
+
 config TOUCHSCREEN_ELO
 	tristate "Elo serial touchscreens"
 	select SERIO
@@ -311,11 +309,6 @@ config TOUCHSCREEN_ELO
 	  To compile this driver as a module, choose M here: the
 	  module will be called elo.
 
-config TOUCHSCREEN_ELAN_KTF2K
-	tristate "Elan KTF2000 I2C touchscreen"
-	depends on I2C
-	help
-	  This enables support for Elan KTF2000 over I2C based touchscreens.
 config TOUCHSCREEN_WACOM_W8001
 	tristate "Wacom W8001 penabled serial touchscreen"
 	select SERIO
@@ -329,40 +322,9 @@ config TOUCHSCREEN_WACOM_W8001
 	  module will be called wacom_w8001.
 
 config TOUCHSCREEN_ATMEL_SWEEP2WAKE
-  bool "Sweep2Wake for Atmel based touchscreens"
-  depends on TOUCHSCREEN_ATMEL
-  default n
-  help
-    This will enable sweep2wake for ATMEL touchscreen
-
-choice
-  prompt "Default ATMEL SWEEP2WAKE setting"
-  help
-    This option sets the ATMEL sweep2wake startup settings.
-    If in doubt, select 'disabled'.
-
-config TOUCHSCREEN_ATMEL_SWEEP2WAKE_DISABLED
-  bool "disabled"
-  depends on TOUCHSCREEN_ATMEL_SWEEP2WAKE
-  help
-    Build ATMEL sweep2wake into kernel, but leave disabled by
-    default.
-
-config TOUCHSCREEN_ATMEL_SWEEP2WAKE_ENABLED
-  bool "enabled"
-  depends on TOUCHSCREEN_ATMEL_SWEEP2WAKE
-  help
-    Build ATMEL sweep2wake into kernel, and enable by default.
-
-config TOUCHSCREEN_ATMEL_SWEEP2WAKE_ENABLED_WITH_BACKLIGHT
-  bool "enabled_with_backlight"
-  depends on TOUCHSCREEN_ATMEL_SWEEP2WAKE
-  help
-    Build ATMEL sweep2wake into kernel, and enable by default
-    with backlight.
-
-endchoice
-  
+        tristate "Sweep2Wake for Atmel based touchscreens"
+        depends on TOUCHSCREEN_ATMEL
+        default n
 
 config TOUCHSCREEN_COMPATIBLE_REPORT
   bool "Touchscreen compatible report"
@@ -533,12 +495,6 @@ config TOUCHSCREEN_SYNAPTICS_I2C_RMI
 
 config TOUCHSCREEN_SYNAPTICS_3K
         tristate "Synaptics 3k serious i2c touchscreen"
-        depends on I2C
-        help
-          This enables support for Synaptics RMI4 over I2C based touchscreens.
-
-config TOUCHSCREEN_SYNAPTICS_3000
-        tristate "Synaptics 3000 serious i2c touchscreen"
         depends on I2C
         help
           This enables support for Synaptics RMI4 over I2C based touchscreens.
