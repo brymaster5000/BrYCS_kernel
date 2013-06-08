@@ -1612,12 +1612,17 @@ config MSM_CPU_FREQ_ONDEMAND_MIN
         int "Min"
         default 245760
 
+<<<<<<< HEAD
+=======
+endif # PERFLOCK
+
 config CMDLINE_OPTIONS
   bool "Enable cmdline options command parsing"
   default n
   help
      This enables the parsing of cmdline options.
 
+>>>>>>> e4ecc41...  add sweep 2 wake
 config ACPUCLOCK_OVERCLOCKING
 	bool "Enable support for CPU overclocking"
 	default n
