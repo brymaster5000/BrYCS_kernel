@@ -276,6 +276,23 @@ int vivow_ct_get_rx_vol(uint8_t hw, int network, int level)
 	return vol;
 }
 
+int vivow_ct_get_speaker_channels(void)
+{
+  /* 1 - Mono, 2 - Stereo */
+  return 1;
+}
+
+int vivow_ct_support_beats(void)
+{
+    return 0;
+}
+
+void vivow_ct_enable_beats(int en)
+{
+  pr_aud_info("%s: %d\n", __func__, en);
+  set_beats_on(en);
+}
+ 
 void vivow_ct_mic_bias_enable(int en, int shift)
 {
 	pr_aud_info("%s: %d\n", __func__, en);
@@ -375,6 +392,8 @@ static struct acoustic_ops acoustic = {
 	.support_back_mic = vivow_ct_support_back_mic,
 	.enable_back_mic =  vivow_ct_back_mic_enable,
 	.get_acoustic_tables = vivow_ct_get_acoustic_tables
+	.support_beats = vivow_ct_support_beats,
+	.enable_beats = vivow_ct_enable_beats,
 };
 
 static struct aic3254_ctl_ops cops = {
